@@ -1,9 +1,8 @@
 import streamlit as st
-import tempfile
-
+import requests
 
 def landing_page():
-    #css
+    # CSS styling
     st.markdown("""
         <style>
         .main {
@@ -55,19 +54,23 @@ def functionality_page():
     if st.button("Back"):
         st.session_state.page = "landing_page"
 
-   
     uploaded_file = st.file_uploader("Upload Video", type=["mp4", "avi", "mov"])
     
     if uploaded_file is not None:
-   
-        temp_file = tempfile.NamedTemporaryFile(delete=False)
-        temp_file.write(uploaded_file.read())
-        video_path = temp_file.name
-        
-        st.video(video_path)
+        st.video(uploaded_file)
         
         if st.button("Detect"):
-            st.success("This is a placeholder. Replace with actual detection logic.")
+            # Send video file to backend
+            with st.spinner("Detecting..."):
+                files = {"file": uploaded_file.getvalue()}
+                response = requests.post("http://localhost:8000/upload-video/", files=files)
+                if response.status_code == 200:
+                    result = response.json().get("result")
+                    video_path = response.json().get("video_path")
+                    st.success(f"Detection Result: {result}")
+                    st.write(f"Video saved at: {video_path}")
+                else:
+                    st.error(f"Error: {response.json().get('error')}")
 
 
 def main():
