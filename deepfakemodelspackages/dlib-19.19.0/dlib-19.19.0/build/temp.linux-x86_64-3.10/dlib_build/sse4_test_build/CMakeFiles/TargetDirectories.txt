@@ -1,0 +1,2 @@
+/home/atharva/Desktop/sih2/deepfakemodelspackages/dlib-19.19.0/dlib-19.19.0/build/temp.linux-x86_64-3.10/dlib_build/sse4_test_build/CMakeFiles/edit_cache.dir
+/home/atharva/Desktop/sih2/deepfakemodelspackages/dlib-19.19.0/dlib-19.19.0/build/temp.linux-x86_64-3.10/dlib_build/sse4_test_build/CMakeFiles/rebuild_cache.dir

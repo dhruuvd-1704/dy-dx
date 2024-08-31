@@ -1,0 +1,20 @@
+--- /home/ondyari/anaconda3/envs/torch0.4/lib/python3.6/site-packages/pretrainedmodels/models/xception.py
++++ /home/ondyari/anaconda3/envs/torch0.4/lib/python3.6/site-packages/pretrainedmodels/models/xception.py
+@@ -7,7 +7,7 @@
+             self.skipbn = nn.BatchNorm2d(out_filters)
+         else:
+             self.skip=None
+-
++        
+         self.relu = nn.ReLU(inplace=True)
+         rep=[]
+ 
+@@ -22,7 +22,7 @@
+             rep.append(self.relu)
+             rep.append(SeparableConv2d(filters,filters,3,stride=1,padding=1,bias=False))
+             rep.append(nn.BatchNorm2d(filters))
+-
++        
+         if not grow_first:
+             rep.append(self.relu)
+             rep.append(SeparableConv2d(in_filters,out_filters,3,stride=1,padding=1,bias=False))

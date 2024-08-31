@@ -1,0 +1,4 @@
+munch
+torch
+torchvision
+tqdm

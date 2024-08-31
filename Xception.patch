@@ -1,0 +1,30 @@
+--- /home/ondyari/anaconda3/envs/torch0.4/lib/python3.6/site-packages/pretrainedmodels/models/xception.py
++++ /home/ondyari/anaconda3/envs/torch0.4/lib/python3.6/site-packages/pretrainedmodels/models/xception.py
+@@ -58,11 +58,11 @@
+         x = self.conv1(input)
+         x = self.bn1(x)
+         x = self.relu(x)
+-
++        
+         x = self.conv2(x)
+         x = self.bn2(x)
+         x = self.relu(x)
+-
++        
+         x = self.block1(x)
+         x = self.block2(x)
+         x = self.block3(x)
+@@ -75,11 +75,11 @@
+         x = self.block10(x)
+         x = self.block11(x)
+         x = self.block12(x)
+-
++        
+         x = self.conv3(x)
+         x = self.bn3(x)
+         x = self.relu(x)
+-
++        
+         x = self.conv4(x)
+         x = self.bn4(x)
+         return x

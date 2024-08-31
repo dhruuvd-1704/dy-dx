@@ -1,0 +1,23 @@
+--- /home/ondyari/cvpr_classification/network/models.py
++++ /home/ondyari/cvpr_classification/network/models.py
+@@ -23,6 +23,20 @@
+                 self.model = torchvision.models.resnet50(pretrained=True)
+             if modelchoice == 'resnet18':
+                 self.model = torchvision.models.resnet18(pretrained=True)
++            # Replace fc
++            num_ftrs = self.model.fc.in_features
++            if not dropout:
++                self.model.fc = nn.Linear(num_ftrs, num_out_classes)
++            else:
++                self.model.fc = nn.Sequential(
++                    nn.Dropout(p=dropout),
++                    nn.Linear(num_ftrs, num_out_classes)
++                )
++        elif modelchoice == 'coord_resnet50' or modelchoice == 'coord_resnet18':
++            if modelchoice == 'coord_resnet50':
++                self.model = coord_resnet50()
++            if modelchoice == 'coord_resnet18':
++                self.model = coord_resnet18()
+             # Replace fc
+             num_ftrs = self.model.fc.in_features
+             if not dropout:
