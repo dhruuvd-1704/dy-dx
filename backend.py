@@ -426,7 +426,7 @@ class Xception(nn.Module):
 
 def return_pytorch04_xception(pretrained=True):
     # Raises warning "src not broadcastable to dst" but thats fine
-    model = xception(pretrained=False)
+    model = xception(pretrained=True)
     if pretrained:
         # Load model in torch 0.4+
         model.fc = model.last_linear
@@ -534,7 +534,7 @@ xception_default_data_transforms = {
 model_path = './deepfakemodelspackages/faceforensics_models/faceforensics++_models_subset/full/xception/full_raw.p'
 model = torch.load(model_path, map_location=torch.device('cpu'))
 
-def preprocess_image(image, cuda=True):
+def preprocess_image(image, cuda=False):
     # Revert from BGR
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     # Preprocess using the preprocessing function used during training and
@@ -568,7 +568,7 @@ def get_boundingbox(face, width, height, scale=1.3, minsize=None):
     return x1, y1, size_bb
 
 def predict_with_model(image, model, post_function=nn.Softmax(dim=1),
-                       cuda=True):
+                       cuda=False):
     # Preprocess
     preprocessed_image = preprocess_image(image, cuda)
 
@@ -584,7 +584,7 @@ def predict_with_model(image, model, post_function=nn.Softmax(dim=1),
 
 def video_file_frame_pred(video_path, model,
                           start_frame=0, end_frame=300,
-                          cuda=True, n_frames=32):
+                          cuda=False, n_frames=64):
     
     pred_frames = [int(round(x)) for x in np.linspace(start_frame, end_frame, n_frames)]
     predictions = []
@@ -649,8 +649,8 @@ def video_file_frame_pred(video_path, model,
         mean_pred = 0.5
     min_pred = np.min(preds_np)
     max_pred = np.max(preds_np)
-    return predictions, outputs, mean_pred, min_pred, max_pred
-
+    # return predictions, outputs, mean_pred, min_pred, max_pred
+    return mean_pred
 # def predict_on_video_set(videos):
 #     predictions = []
     
