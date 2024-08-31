@@ -40,7 +40,6 @@ def landing_page():
         <div class="main">
             <div class="title">Deep Fake Video Detection</div>
             <div class="subtitle">Protecting authenticity in the digital age</div>
-          
         </div>
     """, unsafe_allow_html=True)
     
@@ -66,9 +65,7 @@ def functionality_page():
                 response = requests.post("http://localhost:8000/upload-video/", files=files)
                 if response.status_code == 200:
                     result = response.json().get("result")
-                    video_path = response.json().get("video_path")
                     st.success(f"Detection Result: {result}")
-                    st.write(f"Video saved at: {video_path}")
                 else:
                     st.error(f"Error: {response.json().get('error')}")
 

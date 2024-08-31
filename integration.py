@@ -1,106 +1,17 @@
-from fastapi import FastAPI, File, UploadFile
-from fastapi.responses import JSONResponse
-import tempfile
-import os
-import torch
-import torch.nn as nn
+import os, sys, time
 import cv2
 import numpy as np
-from torchvision.transforms import Normalize
-from PIL import Image
-import torchvision.transforms as transforms
+import pandas as pd
 
-app = FastAPI()
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
 
-# Define your custom model
-# class Pooling(nn.Module):
-#     def __init__(self):
-#         super(Pooling, self).__init__()
-#         self.p1 = nn.AdaptiveAvgPool2d((1,1))
-#         self.p2 = nn.AdaptiveMaxPool2d((1,1))
+import matplotlib.pyplot as plt
 
-#     def forward(self, x):
-#         x1 = self.p1(x)
-#         x2 = self.p2(x)
-#         return (x1 + x2) * 0.5
-
-# class Head(nn.Module):
-#     def __init__(self, in_f, out_f):
-#         super(Head, self).__init__()
-#         self.f = nn.Flatten()
-#         self.l = nn.Linear(in_f, 512)
-#         self.d = nn.Dropout(0.5)
-#         self.o = nn.Linear(512, out_f)
-#         self.b1 = nn.BatchNorm1d(in_f)
-#         self.b2 = nn.BatchNorm1d(512)
-#         self.r = nn.ReLU()
-
-#     def forward(self, x):
-#         x = self.f(x)
-#         x = self.b1(x)
-#         x = self.d(x)
-#         x = self.l(x)
-#         x = self.r(x)
-#         x = self.b2(x)
-#         x = self.d(x)
-#         out = self.o(x)
-#         return out
-
-# class FCN(nn.Module):
-#     def __init__(self, base, in_f):
-#         super(FCN, self).__init__()
-#         self.base = base
-#         self.h1 = Head(in_f, 1)
-
-#     def forward(self, x):
-#         x = self.base(x)
-#         return self.h1(x)
-
-# # Load your model
-# def load_model():
-#     from pytorchcv.model_provider import get_model
-#     base_model = get_model("xception", pretrained=True)
-#     base_model = nn.Sequential(*list(base_model.children())[:-1]) # Remove original output layer
-#     base_model[0].final_block.pool = nn.Sequential(nn.AdaptiveAvgPool2d((1,1)))
-    
-#     model = FCN(base_model, 2048)
-#     model.load_state_dict(torch.load('F:/source/xception/model.pth', map_location=torch.device('cpu')))
-#     model.eval()
-#     return model
-
-# model = load_model()
-
-# # Define helper functions
-# def extract_frame(video_path, frame_number=0):
-#     cap = cv2.VideoCapture(video_path)
-#     cap.set(cv2.CAP_PROP_POS_FRAMES, frame_number)
-#     ret, frame = cap.read()
-#     if not ret:
-#         cap.release()
-#         raise ValueError(f"Could not read frame {frame_number} from {video_path}")
-#     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-#     image = Image.fromarray(frame_rgb)
-#     cap.release()
-#     return image
-
-# def predict(video_path, model):
-#     frame = extract_frame(video_path, frame_number=0)
-#     transform = transforms.Compose([
-#         transforms.Resize((150, 150)),  # Resize to the input size expected by your model
-#         transforms.ToTensor(),
-#         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-#     ])
-#     input_tensor = transform(frame).unsqueeze(0)  # Add batch dimension
-#     input_tensor = input_tensor.to('cpu')
-#     with torch.no_grad():
-#         output = model(input_tensor)
-#         prediction = torch.sigmoid(output).item()
-#     if prediction < 0.5:
-#         return "Real"
-#     else:
-#         return "Fake"
-
-frames_per_video = 64
+import warnings
+warnings.filterwarnings("ignore")
+frames_per_video = 100
 gpu = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 input_size = 150
 from torchvision.transforms import Normalize
@@ -189,7 +100,7 @@ class FCN(torch.nn.Module):
 net = []
 model = FCN(model, 2048)
 # model = model.cuda()
-model.load_state_dict(torch.load('F:/source/xception/model_v1.pth', map_location=torch.device('cpu')))
+model.load_state_dict(torch.load('F:/source/xception/model.pth', map_location=torch.device('cpu')))
 net.append(model)
 
 # Load the pre-trained Haar Cascade model for face detection
@@ -227,7 +138,7 @@ def extract_faces_from_video(video_path, output_folder):
             face_filename = os.path.join(output_folder, f"frame{frame_number}_face{face_number}.jpg")
             cv2.imwrite(face_filename, face)
             face_number += 1
-            if(face_number >= 64): 
+            if(face_number >= 100): 
                 flag = 1 
                 break
         if (flag):
@@ -300,40 +211,13 @@ def predict_on_video(video_path, batch_size):
 
     return 0.5
 
-# def predict_on_video_set(videos):
-#     predictions = []
-#     for filename in videos:
-#         y_pred = predict_on_video(os.path.join(test_dir, filename), batch_size=frames_per_video)
-#         predictions.append(y_pred)
+def predict_on_video_set(videos):
+    predictions = []
+    for filename in videos:
+        y_pred = predict_on_video(os.path.join(test_dir, filename), batch_size=frames_per_video)
+        predictions.append(y_pred)
 
-#     return predictions
+    return predictions
 
-
-
-@app.post("/upload-video/")
-async def upload_video(file: UploadFile = File(...)):
-    try:
-        # Save the uploaded file to a temporary location
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as temp_file:
-            temp_file.write(await file.read())
-            video_path = temp_file.name
-        
-        # Run the prediction logic
-        detection_result = predict_on_video(video_path, frames_per_video)
-        temp = ""
-        if detection_result < 0.5:
-            temp = "Real"
-        else:
-            temp = "Fake"
-        
-        # Cleanup temporary file
-        os.remove(video_path)
-
-        return JSONResponse(content={"result": detection_result*100})
-    
-    except Exception as e:
-        return JSONResponse(content={"error": str(e)}, status_code=500)
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+model.eval()
+predictions = predict_on_video_set(test_videos)
