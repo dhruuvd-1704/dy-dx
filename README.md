@@ -32,6 +32,16 @@ git clone https://github.com/dhruuvd-1704/dy-dx.git
 cd dy-dx
 ```
 
+Create a Terminal for Backend and run:
+```bash
+uvicorn backend:app --reload
+```
+
+Create a new Terminal for Frontend and run:
+```bash
+streamlit run app.py
+```
+
 **Team:<br/>**
 Dhruv Desai<br/>
 Atharva Humane<br/>
