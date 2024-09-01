@@ -1,0 +1,82 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "videoHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "newResult",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateVideoResult",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "videoHash",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "result",
+        "type": "uint256"
+      }
+    ],
+    "name": "VideoResultUpdated",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "videoHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getVideoResult",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "videoHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "isVideoDetected",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "isDetected",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "result",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
