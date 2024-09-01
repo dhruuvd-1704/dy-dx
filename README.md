@@ -15,7 +15,9 @@ Deepfakes are synthetic media in which a person in an existing image or video is
 [Watch the video](https://drive.google.com/file/d/VIDEO_ID/view)
 
 
-https://github.com/user-attachments/assets/d2787c38-ca6b-4b32-a4f4-93391cd2936d
+https://github.com/user-attachments/assets/9845d7f2-f4dc-4547-9186-aa3bcc5676ad
+
+
 
 
 
