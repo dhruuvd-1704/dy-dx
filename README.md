@@ -33,6 +33,8 @@ This repository contains the implementation of the deepfake detection model usin
 
 2. **Social Media Links Support**: Integrate support for analyzing and detecting deepfakes in videos shared on social media platforms with direct links.
 
+3. **Detection Using Audio Anomalies**: Incorporate audio analysis to detect anomalies that may indicate deepfake content.
+
 ## Model Files
 
 You can download the trained models from the following link:
@@ -57,8 +59,20 @@ Create a new Terminal for Frontend and run:
 ```bash
 streamlit run app.py
 ```
+### Tech Stack Used
 
-**Team:<br/>**
+**WEB DEVELOPMENT**
+
+- **Streamlit:** For building interactive web interfaces for the deepfake detection system and blockchain integration.
+- **Web3:** To interact with the Ethereum blockchain for querying and updating smart contracts.
+
+**BACKEND**
+
+- **FastAPI:** For handling video uploads, deepfake detection, and API responses efficiently.
+
+
+
+## Team:
 Dhruv Desai<br/>
 Atharva Humane<br/>
 Niranjan More<br/>
