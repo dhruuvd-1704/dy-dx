@@ -27,13 +27,17 @@ https://github.com/user-attachments/assets/9845d7f2-f4dc-4547-9186-aa3bcc5676ad
 
 This repository contains the implementation of the deepfake detection model using XceptionNet as presented in the paper: **A. V and P. T. Joy, "Deepfake Detection Using XceptionNet," 2023 IEEE International Conference on Recent Advances in Systems Science and Engineering (RASSE), Kerala, India, 2023, pp. 1-5.** [Read the paper](https://doi.org/10.1109/RASSE60029.2023.10363477)
 
+
 ## Future Aspects
 
-1. **Browser Extension**: Develop a browser extension that can detect deepfake content directly within the browser, providing feedback to users as they browse the web.
+1. **Browser Extension**: Develop an extension to detect deepfake content directly in the browser and provide user feedback.
 
-2. **Social Media Links Support**: Integrate support for analyzing and detecting deepfakes in videos shared on social media platforms with direct links.
+2. **Social Media Links Support**: Integrate functionality to analyze and detect deepfakes in videos shared via social media links.
 
-3. **Detection Using Audio Anomalies**: Incorporate audio analysis to detect anomalies that may indicate deepfake content.
+3. **Detection Using Audio Anomalies**: Add audio analysis to identify anomalies that may indicate deepfake content.
+
+4. **Frame/Frames Responsible for DeepFake Flag**: Implement a feature to identify specific frames responsible for deepfake detection, enhancing the granularity of analysis.
+
 
 ## Model Files
 
